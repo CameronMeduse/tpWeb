@@ -1,7 +1,7 @@
 // Implémenter ici les 4 classes du modèle.
 // N'oubliez pas l'héritage !
-function Drawning (formes = new Array(Formes)){
-    this.formes = formes;
+function Drawing (){
+    this.formes = new Map();
 };
 
 function Forme(lineWidth, color){

@@ -3,20 +3,23 @@
 // L'interacteur viendra dans un second temps donc ne vous en souciez pas au départ.
 function DnD(canvas, interactor) {
 	// Définir ici les attributs de la 'classe'
-  var xStart = 0;
-  var yStart = 0;
-  var xEnd = 0;
-  var yEnd = 0;
+  this.xStart = 0;
+  this.yStart = 0;
+  this.xEnd = 0;
+  this.yEnd = 0;
   var isClicking = false;
+  this.interactor = interactor;
 
 	// Developper les 3 fonctions gérant les événements
   DnD.prototype.press = function(evt) {
     const newPos = getMousePosition(canvas, evt);
-    xStart = newPos.x;
-    yStart = newPos.y;
+    this.xStart = newPos.x;
+    this.yStart = newPos.y;
 
     isClicking = true;
 
+    this.interactor.onInteractionStart(this);
+    console.log(this.xStart)
     //console.log("PRESS -- xS : " + xStart + " yS : " + yStart + " xE " + xEnd + " yE " + yEnd);
   }.bind(this);
 
@@ -24,9 +27,10 @@ function DnD(canvas, interactor) {
     if(!isClicking)
       return;
     const newPos = getMousePosition(canvas, evt);
-    xEnd = newPos.x;
-    yEnd = newPos.y;
+    this.xEnd = newPos.x;
+    this.yEnd = newPos.y;
 
+    this.interactor.onInteractionUpdate(this);
     //console.log("MOVE -- xS : " + xStart + " yS : " + yStart + " xE " + xEnd + " yE " + yEnd);
   }.bind(this);
 
@@ -34,11 +38,12 @@ function DnD(canvas, interactor) {
     if(!isClicking)
       return;
     const newPos = getMousePosition(canvas, evt);
-    xEnd = newPos.x;
-    yEnd = newPos.y;
+    this.xEnd = newPos.x;
+    this.yEnd = newPos.y;
 
     isClicking = false;
 
+    this.interactor.onInteractionEnd(this);
     //console.log("DROP -- xS : " + xStart + " yS : " + yStart + " xE " + xEnd + " yE " + yEnd);
   }.bind(this);
 	// Associer les fonctions précédentes aux évènements du canvas.
